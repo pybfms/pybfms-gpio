@@ -16,8 +16,31 @@ class GpioBfm():
         self._gpio_in = 0
         self._gpio_out = 0
         
+        self._on_in_cb = []
+        
         self.ev = pybfms.event()
         pass
+    
+    def add_on_in_cb(self, cb):
+        self._on_in_cb.append(cb)
+        
+    def del_on_in_cb(self, cb):
+        self._on_in_cb.remove(cb)
+        
+    async def on_in(self):
+        """Wait for the input to change"""
+       
+        ev = pybfms.event()
+        def closure(val):
+            ev.set(val)
+            
+        self.add_on_in_cb(closure)
+        
+        await ev.wait()
+        
+        self.del_on_in_cb(closure)
+            
+        return ev.data
         
     @pybfms.export_task(pybfms.uint32_t, pybfms.uint32_t)
     def _set_parameters(self, n_pins, n_banks):
@@ -42,6 +65,10 @@ class GpioBfm():
     @pybfms.export_task(pybfms.uint64_t)
     def _set_gpio_in(self, gpio_in):
         self._gpio_in = gpio_in
+        
+        if len(self._on_in_cb) > 0:
+            for cb in self._on_in_cb.copy():
+                cb(gpio_in)
         
     @pybfms.import_task(pybfms.uint64_t)
     def _set_gpio_out(self, gpio_out):
