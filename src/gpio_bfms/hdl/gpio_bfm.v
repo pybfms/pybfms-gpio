@@ -144,6 +144,7 @@ module gpio_bfm #(
         $display("gpio_bfm: %m");
         // TODO: pass parameter values
         _set_parameters(N_PINS, N_BANKS);
+      	_set_gpio_in(gpio_in);
     end
     endtask
 	

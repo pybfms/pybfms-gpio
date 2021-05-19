@@ -27,6 +27,9 @@ class GpioBfm():
     def del_on_in_cb(self, cb):
         self._on_in_cb.remove(cb)
         
+    def get_gpio_in(self):
+        return self._gpio_in
+        
     async def on_in(self):
         """Wait for the input to change"""
        
