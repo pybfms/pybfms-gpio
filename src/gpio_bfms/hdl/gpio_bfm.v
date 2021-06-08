@@ -1,4 +1,3 @@
-
 /****************************************************************************
  * gpio_bfm.v
  * 
@@ -141,7 +140,7 @@ module gpio_bfm #(
         
     task init;
     begin
-        $display("gpio_bfm: %m");
+        $display("%0t: gpio_bfm: %m", $time);
         // TODO: pass parameter values
         _set_parameters(N_PINS, N_BANKS);
       	_set_gpio_in(gpio_in);
