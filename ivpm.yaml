@@ -1,0 +1,11 @@
+package:
+    name: pybfms-gpio
+    version: None
+    deps:
+        - name: cocotb
+          type: python
+          src: pypi
+        - name: pybfms
+          type: python
+          src: pypi
+    dev-deps:
